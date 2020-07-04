@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "declarations",
+    "outDir": "declarations/index.d.ts",
+    "target": "es2015",
+    "lib": ["es5", "es6", "es7", "dom"],
+    "esModuleInterop": true,
+    "preserveConstEnums": true,
+    "noImplicitAny": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "files": ["src/utils/primitives.d.ts"]
+}

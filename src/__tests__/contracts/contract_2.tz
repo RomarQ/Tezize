@@ -1,0 +1,231 @@
+parameter (or (int %claim) (pair %remove (int %cell) (int %k)));
+storage   (pair (pair (bool %claimed) (map %deck int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))));
+code
+  {
+    DUP;        # pair @parameter @storage : pair @parameter @storage
+    CDR;        # @storage : pair @parameter @storage
+    SWAP;       # pair @parameter @storage : @storage
+    CAR;        # @parameter : @storage
+    IF_LEFT
+      {
+        # == claim ==
+        # sp.verify(sp.sum(self.data.deck.values()) == 0) # @parameter%claim : @storage
+        PUSH int 0; # int : @parameter%claim : @storage
+        DUP;        # int : int : @parameter%claim : @storage
+        DIG 3;      # @storage : int : int : @parameter%claim
+        DUP;        # @storage : @storage : int : int : @parameter%claim
+        DUG 4;      # @storage : int : int : @parameter%claim : @storage
+        CADR;       # map int int : int : int : @parameter%claim : @storage
+        ITER
+          {
+            CDR;        # int : int : int : @parameter%claim : @storage
+            ADD;        # int : int : @parameter%claim : @storage
+          }; # int : int : @parameter%claim : @storage
+        COMPARE;    # int : @parameter%claim : @storage
+        EQ;         # bool : @parameter%claim : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: sp.sum(self.data.deck.values()) == 0"; # string : @parameter%claim : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%claim : @storage
+        SWAP;       # @storage : @parameter%claim
+        # sp.verify(~ self.data.claimed) # @storage : @parameter%claim
+        DUP;        # @storage : @storage : @parameter%claim
+        DUG 2;      # @storage : @parameter%claim : @storage
+        CAAR;       # bool : @parameter%claim : @storage
+        IF
+          {
+            PUSH string "WrongCondition: ~ self.data.claimed"; # string : @parameter%claim : @storage
+            FAILWITH;   # FAILED
+          }
+          {}; # @parameter%claim : @storage
+        SWAP;       # @storage : @parameter%claim
+        # self.data.claimed = True # @storage : @parameter%claim
+        DUP;        # @storage : @storage : @parameter%claim
+        CDR;        # pair (int %nextPlayer) (pair (int %size) (int %winner)) : @storage : @parameter%claim
+        SWAP;       # @storage : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%claim
+        CADR;       # map int int : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%claim
+        PUSH bool True; # bool : map int int : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%claim
+        PAIR;       # pair bool (map int int) : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%claim
+        PAIR;       # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : @parameter%claim
+        # self.data.winner = self.data.nextPlayer # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : @parameter%claim
+        DUP;        # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : @parameter%claim
+        DUG 2;      # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        DUP;        # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        CAR;        # pair bool (map int int) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        SWAP;       # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair bool (map int int) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        CDR;        # pair (int %nextPlayer) (pair (int %size) (int %winner)) : pair bool (map int int) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        DUP;        # pair (int %nextPlayer) (pair (int %size) (int %winner)) : pair (int %nextPlayer) (pair (int %size) (int %winner)) : pair bool (map int int) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        CAR;        # int : pair (int %nextPlayer) (pair (int %size) (int %winner)) : pair bool (map int int) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        SWAP;       # pair (int %nextPlayer) (pair (int %size) (int %winner)) : int : pair bool (map int int) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        CDAR;       # int : int : pair bool (map int int) : @parameter%claim : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        DIG 4;      # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : int : int : pair bool (map int int) : @parameter%claim
+        CDAR;       # int : int : int : pair bool (map int int) : @parameter%claim
+        SWAP;       # int : int : int : pair bool (map int int) : @parameter%claim
+        PAIR;       # pair int int : int : pair bool (map int int) : @parameter%claim
+        SWAP;       # int : pair int int : pair bool (map int int) : @parameter%claim
+        PAIR;       # pair int (pair int int) : pair bool (map int int) : @parameter%claim
+        SWAP;       # pair bool (map int int) : pair int (pair int int) : @parameter%claim
+        PAIR;       # pair (pair bool (map int int)) (pair int (pair int int)) : @parameter%claim
+        # sp.verify(params.winner == self.data.winner) # pair (pair bool (map int int)) (pair int (pair int int)) : @parameter%claim
+        DUP;        # pair (pair bool (map int int)) (pair int (pair int int)) : pair (pair bool (map int int)) (pair int (pair int int)) : @parameter%claim
+        DUG 2;      # pair (pair bool (map int int)) (pair int (pair int int)) : @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+        CDDDR;      # int : @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+        SWAP;       # @parameter%claim : int : pair (pair bool (map int int)) (pair int (pair int int))
+        DUP;        # @parameter%claim : @parameter%claim : int : pair (pair bool (map int int)) (pair int (pair int int))
+        DUG 2;      # @parameter%claim : int : @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+        COMPARE;    # int : @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+        EQ;         # bool : @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.winner == self.data.winner"; # string : @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+            FAILWITH;   # FAILED
+          }; # @parameter%claim : pair (pair bool (map int int)) (pair int (pair int int))
+        DROP;       # pair (pair bool (map int int)) (pair int (pair int int))
+      }
+      {
+        # == remove ==
+        # sp.verify(params.cell >= 0) # @parameter%remove : @storage
+        DUP;        # @parameter%remove : @parameter%remove : @storage
+        CAR;        # int : @parameter%remove : @storage
+        PUSH int 0; # int : int : @parameter%remove : @storage
+        SWAP;       # int : int : @parameter%remove : @storage
+        COMPARE;    # int : @parameter%remove : @storage
+        GE;         # bool : @parameter%remove : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.cell >= 0"; # string : @parameter%remove : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%remove : @storage
+        SWAP;       # @storage : @parameter%remove
+        # sp.verify(params.cell < self.data.size) # @storage : @parameter%remove
+        DUP;        # @storage : @storage : @parameter%remove
+        DUG 2;      # @storage : @parameter%remove : @storage
+        CDDAR;      # int : @parameter%remove : @storage
+        SWAP;       # @parameter%remove : int : @storage
+        DUP;        # @parameter%remove : @parameter%remove : int : @storage
+        DUG 2;      # @parameter%remove : int : @parameter%remove : @storage
+        CAR;        # int : int : @parameter%remove : @storage
+        COMPARE;    # int : @parameter%remove : @storage
+        LT;         # bool : @parameter%remove : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.cell < self.data.size"; # string : @parameter%remove : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%remove : @storage
+        # sp.verify(params.k >= 1) # @parameter%remove : @storage
+        DUP;        # @parameter%remove : @parameter%remove : @storage
+        CDR;        # int : @parameter%remove : @storage
+        PUSH int 1; # int : int : @parameter%remove : @storage
+        SWAP;       # int : int : @parameter%remove : @storage
+        COMPARE;    # int : @parameter%remove : @storage
+        GE;         # bool : @parameter%remove : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.k >= 1"; # string : @parameter%remove : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%remove : @storage
+        # sp.verify(params.k <= 2) # @parameter%remove : @storage
+        DUP;        # @parameter%remove : @parameter%remove : @storage
+        CDR;        # int : @parameter%remove : @storage
+        PUSH int 2; # int : int : @parameter%remove : @storage
+        SWAP;       # int : int : @parameter%remove : @storage
+        COMPARE;    # int : @parameter%remove : @storage
+        LE;         # bool : @parameter%remove : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.k <= 2"; # string : @parameter%remove : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%remove : @storage
+        SWAP;       # @storage : @parameter%remove
+        # sp.verify(params.k <= self.data.deck[params.cell]) # @storage : @parameter%remove
+        DUP;        # @storage : @storage : @parameter%remove
+        DUG 2;      # @storage : @parameter%remove : @storage
+        CADR;       # map int int : @parameter%remove : @storage
+        SWAP;       # @parameter%remove : map int int : @storage
+        DUP;        # @parameter%remove : @parameter%remove : map int int : @storage
+        DUG 2;      # @parameter%remove : map int int : @parameter%remove : @storage
+        CAR;        # int : map int int : @parameter%remove : @storage
+        GET;        # option int : @parameter%remove : @storage
+        IF_SOME
+          {
+            # of_some: Get-item:195 # @some : @parameter%remove : @storage
+          }
+          {
+            PUSH string "Get-item:195"; # string : @parameter%remove : @storage
+            FAILWITH;   # FAILED
+          }; # @some : @parameter%remove : @storage
+        SWAP;       # @parameter%remove : @some : @storage
+        DUP;        # @parameter%remove : @parameter%remove : @some : @storage
+        DUG 2;      # @parameter%remove : @some : @parameter%remove : @storage
+        CDR;        # int : @some : @parameter%remove : @storage
+        COMPARE;    # int : @parameter%remove : @storage
+        LE;         # bool : @parameter%remove : @storage
+        IF
+          {}
+          {
+            PUSH string "WrongCondition: params.k <= self.data.deck[params.cell]"; # string : @parameter%remove : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%remove : @storage
+        SWAP;       # @storage : @parameter%remove
+        # self.data.deck[params.cell] -= params.k # @storage : @parameter%remove
+        DUP;        # @storage : @storage : @parameter%remove
+        DUG 2;      # @storage : @parameter%remove : @storage
+        DUP;        # @storage : @storage : @parameter%remove : @storage
+        CDR;        # pair (int %nextPlayer) (pair (int %size) (int %winner)) : @storage : @parameter%remove : @storage
+        SWAP;       # @storage : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        CAR;        # pair (bool %claimed) (map %deck int int) : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        DUP;        # pair (bool %claimed) (map %deck int int) : pair (bool %claimed) (map %deck int int) : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        CAR;        # bool : pair (bool %claimed) (map %deck int int) : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        SWAP;       # pair (bool %claimed) (map %deck int int) : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        CDR;        # map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        DIG 3;      # @parameter%remove : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @storage
+        DUP;        # @parameter%remove : @parameter%remove : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @storage
+        DUG 4;      # @parameter%remove : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        CDR;        # int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove : @storage
+        DIG 5;      # @storage : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        CADR;       # map int int : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        DIG 5;      # @parameter%remove : map int int : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        DUP;        # @parameter%remove : @parameter%remove : map int int : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        DUG 6;      # @parameter%remove : map int int : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        CAR;        # int : map int int : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        GET;        # option int : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        IF_SOME
+          {
+            # of_some: Get-item:195 # @some : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+          }
+          {
+            PUSH string "Get-item:195"; # string : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+            FAILWITH;   # FAILED
+          }; # @some : int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        SUB;        # int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        SOME;       # option int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner)) : @parameter%remove
+        DIG 4;      # @parameter%remove : option int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        CAR;        # int : option int : map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        UPDATE;     # map int int : bool : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        SWAP;       # bool : map int int : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        PAIR;       # pair bool (map int int) : pair (int %nextPlayer) (pair (int %size) (int %winner))
+        PAIR;       # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        # self.data.nextPlayer = 3 - self.data.nextPlayer # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        DUP;        # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        DUP;        # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        CAR;        # pair bool (map int int) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        SWAP;       # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair bool (map int int) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        CDDR;       # pair (int %size) (int %winner) : pair bool (map int int) : pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner)))
+        DIG 2;      # pair (pair bool (map int int)) (pair (int %nextPlayer) (pair (int %size) (int %winner))) : pair (int %size) (int %winner) : pair bool (map int int)
+        CDAR;       # int : pair (int %size) (int %winner) : pair bool (map int int)
+        PUSH int 3; # int : int : pair (int %size) (int %winner) : pair bool (map int int)
+        SUB;        # int : pair (int %size) (int %winner) : pair bool (map int int)
+        PAIR;       # pair int (pair (int %size) (int %winner)) : pair bool (map int int)
+        SWAP;       # pair bool (map int int) : pair int (pair (int %size) (int %winner))
+        PAIR;       # pair (pair bool (map int int)) (pair int (pair (int %size) (int %winner)))
+      }; # pair (pair bool (map int int)) (pair int (pair int int))
+    NIL operation; # list operation : pair (pair bool (map int int)) (pair int (pair int int))
+    PAIR;       # pair (list operation) (pair (pair bool (map int int)) (pair int (pair int int)))
+  } # pair (list operation) (pair (pair bool (map int int)) (pair int (pair int int)));

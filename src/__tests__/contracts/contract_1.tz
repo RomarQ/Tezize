@@ -1,0 +1,9 @@
+parameter unit;
+storage   int;
+code
+  {
+    CDR;        # @storage
+    # == entry_point_1 == # @storage
+    NIL operation; # list operation : @storage
+    PAIR;       # pair (list operation) @storage
+  } # pair (list operation) @storage;

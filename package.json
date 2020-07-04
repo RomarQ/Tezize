@@ -1,0 +1,55 @@
+{
+  "name": "tezize",
+  "version": "0.0.1",
+  "description": "Calculate the size of your tezos contract.",
+  "main": "dist/index.min.js",
+  "author": "Rodrigo Quelhas <rodrigo_quelhas@outlook.pt>",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "7.1.3",
+    "@rollup/plugin-commonjs": "11.1.0",
+    "rollup-plugin-node-globals": "1.4.0",
+    "rollup-plugin-node-builtins": "2.1.2",
+    "@rollup/plugin-babel": "5.0.4",
+    "rollup-plugin-terser": "5.3.0",
+    "rollup": "^2.9.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "typescript": "^3.9.6",
+    "@types/jest": "^25.2.1",
+    "jest": "^25.2.1",
+    "ts-jest": "^25.2.1",
+    "jest-junit": "^10.0.0",
+    "jest-html-reporter": "^3.1.0",
+    "@types/crypto-js": "3.1.45",
+    "@babel/plugin-transform-runtime": "7.10.1",
+    "@babel/plugin-transform-flow-strip-types": "7.10.1",
+    "babel-jest": "26.1.0",
+    "@babel/core": "7.10.1"
+  },
+  "module": "Tezize",
+  "directories": {
+    "dist": "dist"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -cw",
+    "test": "jest",
+    "ci-test": "CI=true yarn test --collect-coverage --reporters=default --reporters=jest-junit --reporters=jest-html-reporter"
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": ".",
+    "outputName": "coverage/junit.xml",
+    "uniqueOutputName": "false",
+    "classNameTemplate": "{classname} - {title}",
+    "titleTemplate": "{classname} - {title}",
+    "ancestorSeparator": " › ",
+    "usePathForSuiteName": "true"
+  },
+  "jest-html-reporter": {
+    "outputPath": "coverage/test-report.html"
+  },
+  "dependencies": {
+    "@taquito/michel-codec": "6.3.2-beta.0"
+  }
+}
