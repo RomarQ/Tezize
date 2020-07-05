@@ -1,6 +1,6 @@
 {
   "name": "tezize",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Calculate the size of your tezos contract.",
   "main": "dist/index.min.js",
   "author": "Rodrigo Quelhas <rodrigo_quelhas@outlook.pt>",
