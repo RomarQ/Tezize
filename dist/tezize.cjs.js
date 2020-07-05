@@ -3,9 +3,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-if (typeof global.TextEncoder == 'undefined') {
-    global.TextEncoder = function TextEncoder() { };
-    global.TextEncoder.prototype.encode = function encode(str) {
+if (typeof window.TextEncoder == 'undefined') {
+    window.TextEncoder = function TextEncoder() { };
+    window.TextEncoder.prototype.encode = function encode(str) {
         var Len = str.length, resPos = -1;
         // The Uint8Array's length must be at least 3x the length of the string because an invalid UTF-16
         //  takes up the equivelent space of 3 UTF-8 characters to encode it properly. However, Array's
@@ -59,12 +59,12 @@ if (typeof global.TextEncoder == 'undefined') {
         resArr.length = resPos + 1; // trim off extra weight
         return resArr;
     };
-    global.TextEncoder.prototype.toString = function () {
+    window.TextEncoder.prototype.toString = function () {
         return '[object TextEncoder]';
     };
     try {
         // Object.defineProperty only works on DOM prototypes in IE8
-        Object.defineProperty(global.TextEncoder.prototype, 'encoding', {
+        Object.defineProperty(window.TextEncoder.prototype, 'encoding', {
             get: function () {
                 if (TextEncoder.prototype.isPrototypeOf(this))
                     return 'utf-8';
@@ -74,10 +74,10 @@ if (typeof global.TextEncoder == 'undefined') {
         });
     }
     catch (e) {
-        /*IE6-8 fallback*/ global.TextEncoder.prototype.encoding = 'utf-8';
+        /*IE6-8 fallback*/ window.TextEncoder.prototype.encoding = 'utf-8';
     }
     if (typeof Symbol !== 'undefined')
-        global.TextEncoder.prototype[Symbol.toStringTag] = 'TextEncoder';
+        window.TextEncoder.prototype[Symbol.toStringTag] = 'TextEncoder';
 }
 
 const numberToZarith = (value) => {

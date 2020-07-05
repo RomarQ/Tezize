@@ -1,6 +1,6 @@
-if (typeof global.TextEncoder == 'undefined') {
-  global.TextEncoder = function TextEncoder() {} as any;
-  global.TextEncoder.prototype.encode = function encode(str: any) {
+if (typeof window.TextEncoder == 'undefined') {
+  window.TextEncoder = function TextEncoder() {} as any;
+  window.TextEncoder.prototype.encode = function encode(str: any) {
     'use strict';
     var Len = str.length,
       resPos = -1;
@@ -52,20 +52,20 @@ if (typeof global.TextEncoder == 'undefined') {
     (resArr as any).length = resPos + 1; // trim off extra weight
     return resArr;
   };
-  global.TextEncoder.prototype.toString = function () {
+  window.TextEncoder.prototype.toString = function () {
     return '[object TextEncoder]';
   };
   try {
     // Object.defineProperty only works on DOM prototypes in IE8
-    Object.defineProperty(global.TextEncoder.prototype, 'encoding', {
+    Object.defineProperty(window.TextEncoder.prototype, 'encoding', {
       get: function () {
         if (TextEncoder.prototype.isPrototypeOf(this)) return 'utf-8';
         else throw TypeError('Illegal invocation');
       },
     });
   } catch (e) {
-    /*IE6-8 fallback*/ (global.TextEncoder.prototype as any).encoding = 'utf-8';
+    /*IE6-8 fallback*/ (window.TextEncoder.prototype as any).encoding = 'utf-8';
   }
   if (typeof Symbol !== 'undefined')
-    (global.TextEncoder.prototype as any)[Symbol.toStringTag] = 'TextEncoder';
+    (window.TextEncoder.prototype as any)[Symbol.toStringTag] = 'TextEncoder';
 }
