@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { Parser } from '@taquito/michel-codec';
-import { encodeMichelineJSON } from '../../core/encoder';
 import { calculateSize } from '../../index';
 
 beforeEach(() => {});

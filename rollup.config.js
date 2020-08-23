@@ -22,7 +22,7 @@ export default {
       banner: `/* === Version: ${pkg.version} === */`,
     },
     {
-      name: pkg.module,
+      name: 'Tezize',
       file: `${pkg.directories.dist}/${pkg.name}.min.js`,
       format: 'iife',
       plugins: [terser()],

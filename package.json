@@ -1,8 +1,10 @@
 {
   "name": "tezize",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Calculate the size of your tezos contract.",
-  "main": "dist/index.min.js",
+  "main": "dist/tezize.cjs.js",
+  "module": "dist/tezize.es.js",
+  "minified": "dist/tezize.min.js",
   "author": "Rodrigo Quelhas <rodrigo_quelhas@outlook.pt>",
   "license": "MIT",
   "devDependencies": {
@@ -11,7 +13,7 @@
     "rollup-plugin-node-globals": "1.4.0",
     "rollup-plugin-node-builtins": "2.1.2",
     "@rollup/plugin-babel": "5.0.4",
-    "rollup-plugin-terser": "5.3.0",
+    "rollup-plugin-terser": "7.0.0",
     "rollup": "^2.9.0",
     "rollup-plugin-typescript2": "^0.27.1",
     "typescript": "^3.9.6",
@@ -26,10 +28,14 @@
     "babel-jest": "26.1.0",
     "@babel/core": "7.10.1"
   },
-  "module": "Tezize",
   "directories": {
     "dist": "dist"
   },
+  "files": [
+    "dist",
+    "declarations/index.d.ts"
+  ],
+  "types": "declarations/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -cw",

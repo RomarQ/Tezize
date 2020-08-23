@@ -1,4 +1,4 @@
-/* === Version: 0.0.1 === */
+/* === Version: 0.0.4 === */
 if (typeof window.TextEncoder == 'undefined') {
     window.TextEncoder = function TextEncoder() { };
     window.TextEncoder.prototype.encode = function encode(str) {
